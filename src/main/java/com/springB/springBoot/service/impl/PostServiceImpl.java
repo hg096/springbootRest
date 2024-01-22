@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public PostResponse getAllPosts(Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto getPostById(long id) {
+    public PostDto getPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Post", "id", id)
         );
@@ -67,7 +67,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto updatePost(PostDto postDto, long id) {
+    public PostDto updatePost(PostDto postDto, Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Post", "id", id)
         );
@@ -80,7 +80,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePostById(long id) {
+    public void deletePostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Post", "id", id)
         );

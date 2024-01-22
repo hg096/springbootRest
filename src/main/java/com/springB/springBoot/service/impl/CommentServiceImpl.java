@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto createComment(long postId, CommentDto commentDto) {
+    public CommentDto createComment(Long postId, CommentDto commentDto) {
 
         Comment comment = mapToEntity(commentDto);
         Post post = postRepository.findById(postId).orElseThrow(
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getCommentsByPostId(long postId) {
+    public List<CommentDto> getCommentsByPostId(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
 
         return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
@@ -49,16 +49,46 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto getCommentById(Long postId, Long commentId) {
 
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new ResourceNotFoundException("Post", "id", postId));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow( () -> new ResourceNotFoundException("Comment", "id", commentId));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 
         if (!comment.getPost().getId().equals(post.getId())) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "댓글이랑 게시글이랑 일치하지않음!");
         }
 
         return mapToDTO(comment);
+    }
+
+    @Override
+    public CommentDto updateComment(Long postId, Long commentId, CommentDto commentRequest) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "댓글이랑 게시글이랑 일치하지않음!");
+        }
+
+        comment.setName(commentRequest.getName());
+        comment.setEmail(commentRequest.getEmail());
+        comment.setBody(commentRequest.getBody());
+
+       Comment updateComment = commentRepository.save(comment);
+        return mapToDTO(updateComment);
+
+    }
+
+    @Override
+    public void deleteComment(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "댓글이랑 게시글이랑 일치하지않음!");
+        }
+
+        commentRepository.delete(comment);
+
     }
 
 

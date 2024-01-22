@@ -1,5 +1,6 @@
 package com.springB.springBoot.controller;
 
+import com.springB.springBoot.entity.Comment;
 import com.springB.springBoot.payload.CommentDto;
 import com.springB.springBoot.service.CommentService;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class CommentController {
         return commentService.getCommentsByPostId(postId);
     }
 
-    @GetMapping("/post/{postId}/comments/{id}")
+    @GetMapping("/posts/{postId}/comments/{id}")
     public ResponseEntity<CommentDto> getCommentById(
             @PathVariable(value = "postId") Long postId
             , @PathVariable(value = "id") Long commentId) {
@@ -41,6 +42,22 @@ public class CommentController {
         return new ResponseEntity<>(commentDto,HttpStatus.OK);
     }
 
+    @PutMapping("/posts/{postId}/comments/{id}")
+    public ResponseEntity<CommentDto> updateComment(
+            @PathVariable(value = "postId") Long postId
+            , @PathVariable(value = "id") Long commentId
+            , CommentDto commentDto ) {
+        CommentDto updateComment = commentService.updateComment(postId, commentId, commentDto);
+        return new ResponseEntity<>(updateComment, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/posts/{postId}/comments/{id}")
+    public ResponseEntity<String> deleteComment(
+            @PathVariable(value = "postId") Long postId
+            , @PathVariable(value = "id") Long commentId) {
+        commentService.deleteComment(postId,commentId);
+        return new ResponseEntity<>("댓글 삭제 완료!", HttpStatus.OK);
+    }
 
 }
 
