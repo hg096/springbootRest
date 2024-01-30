@@ -14,3 +14,7 @@ spring.datasource.password=비밀번호
 
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 spring.jpa.hibernate.ddl-auto=update
+
+spring.security.user.name=아이디
+spring.security.user.password=비밀번호
+spring.security.user.roles=ADMIN
