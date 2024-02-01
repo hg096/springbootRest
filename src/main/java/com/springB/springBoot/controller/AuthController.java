@@ -1,6 +1,7 @@
 package com.springB.springBoot.controller;
 
 
+import com.springB.springBoot.payload.JWTAuthResponse;
 import com.springB.springBoot.payload.LoginDto;
 import com.springB.springBoot.payload.RegisterDto;
 import com.springB.springBoot.service.AuthService;
@@ -20,9 +21,13 @@ public class AuthController {
 
     @PostMapping("/login")
 //    @PostMapping(value = { "/login", "/signin" })
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto) {
+        String token = authService.login(loginDto);
+
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 
     @PostMapping(value = {"/register", "/signup"})
