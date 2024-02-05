@@ -19,5 +19,6 @@ spring.security.user.name=아이디
 spring.security.user.password=비밀번호
 spring.security.user.roles=ADMIN
 
+# https://emn178.github.io/online-tools/sha256.html <<- 여기서 만들기
 app.jwt-secret=시크릿키
 app-jwt-expiration-milliseconds=604800000

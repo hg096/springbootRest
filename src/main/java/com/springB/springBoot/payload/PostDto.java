@@ -21,6 +21,8 @@ public class PostDto {
 
     @NotEmpty(message = "입력해주세요.")
     private String content;
-
     private Set<CommentDto> comments;
+
+    private Long categoryId;
+
 }

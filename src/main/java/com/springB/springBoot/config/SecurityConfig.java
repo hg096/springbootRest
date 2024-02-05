@@ -52,6 +52,7 @@ public class SecurityConfig {
 //                          .anyRequest().permitAll()
                                 .requestMatchers( HttpMethod.GET, "/posts/**").permitAll()
                                 .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(
