@@ -3,6 +3,8 @@ package com.springB.springBoot.config;
 
 import com.springB.springBoot.security.JwtAuthenticationEntryPoint;
 import com.springB.springBoot.security.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,6 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
+@SecurityScheme(
+        name = "Bear"
+        , type = SecuritySchemeType.HTTP
+        , bearerFormat = "JWT"
+        , scheme = "bearer"
+)
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
@@ -53,6 +61,8 @@ public class SecurityConfig {
                                 .requestMatchers( HttpMethod.GET, "/posts/**").permitAll()
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                                .requestMatchers( "/swagger-ui/**").permitAll()
+                                .requestMatchers( "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(
